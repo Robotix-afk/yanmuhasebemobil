@@ -1,2 +1,0 @@
-# yanmuhasebemobil
-yanmuhasebe mobil
