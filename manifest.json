@@ -1,0 +1,11 @@
+
+{
+  "name": "YanMuhasebeMobil",
+  "short_name": "YanMuhasebe",
+  "description": "YanMuhasebe mobil ön muhasebe uygulaması",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#16834a"
+}
