@@ -3154,4 +3154,17 @@ document.addEventListener('click',e=>{
   }
   $('#login').style.display='flex';
 })();
-</script></body></html>
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", async () => {
+    try {
+      await navigator.serviceWorker.register("./service-worker.js");
+      console.log("YanMuhasebeMobil bildirim altyapısı hazır.");
+    } catch (error) {
+      console.error("Service Worker kaydedilemedi:", error);
+    }
+  });
+}
+</script>
+</html>
