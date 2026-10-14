@@ -1,31 +1,38 @@
 
 window.YanMuhasebeBildirim = {
-  async izinIste() {
+  async izinPenceresiAc() {
     if (!("Notification" in window)) return;
+    if (Notification.permission !== "default") return;
 
-    if (Notification.permission === "granted") return;
+    const pencere = document.createElement("div");
+    pencere.style.cssText = `
+      position:fixed;inset:0;background:#0008;z-index:99999;
+      display:flex;align-items:center;justify-content:center;padding:20px;
+      font-family:Arial,sans-serif;
+    `;
 
-    if (Notification.permission === "denied") {
-      alert("Bildirim iznini iPhone ayarlarından açabilirsin.");
-      return;
-    }
+    pencere.innerHTML = `
+      <div style="background:white;color:#222;padding:24px;border-radius:16px;
+        max-width:340px;width:100%;text-align:center">
+        <h3>Bildirimleri onaylıyor musunuz?</h3>
+        <p>YanMuhasebe; vade, abonelik ve hesap hareketleri hakkında bildirim gönderebilir.</p>
+        <button id="ymOnayla" style="padding:12px 20px;background:#16834a;
+          color:white;border:0;border-radius:8px">Onayla</button>
+        <button id="ymReddet" style="padding:12px 20px;margin-left:8px;
+          border:0;border-radius:8px">Şimdi değil</button>
+      </div>`;
 
-    const izin = await Notification.requestPermission();
+    document.body.appendChild(pencere);
 
-    if (izin === "granted") {
-      const kayit = await navigator.serviceWorker.ready;
-      await kayit.showNotification("YanMuhasebeMobil", {
-        body: "Bildirimler başarıyla etkinleştirildi."
-      });
-    }
+    document.getElementById("ymReddet").onclick = () => pencere.remove();
+
+    document.getElementById("ymOnayla").onclick = async () => {
+      pencere.remove();
+      try {
+        await Notification.requestPermission();
+      } catch (e) {
+        console.log("Bildirim izni alınamadı.");
+      }
+    };
   }
 };
-
-window.addEventListener("load", () => {
-  if (Notification.permission === "default") {
-    const buton = document.createElement("button");
-    buton.textContent = "Bildirimleri Etkinleştir";
-    buton.onclick = () => window.YanMuhasebeBildirim.izinIste();
-    document.body.prepend(buton);
-  }
-});
